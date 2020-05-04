@@ -201,6 +201,9 @@ exports.showTopTenStudentsInSubjectAcrossAllSchools = (req,res)=>{
        },
        {
            $sort: { score: -1}
+       },
+       {
+           $limit: 10
        }
 
     ])
@@ -243,6 +246,9 @@ exports.showTopTenStudentsInSubjectAcrossSchool = (req,res)=>{
        },
        {
            $sort: { score: -1}
+       },
+       {
+           $limit: 10
        }
 
     ])
