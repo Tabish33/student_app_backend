@@ -16,8 +16,9 @@ exports.addStudent = (req,res)=>{
     })
 }
 
-exports.showTopTenStudentsAcrossAllSchoolsYearly = (req,res)=>{
-    var time_frame = req.body.time_frame
+exports.showTopTenStudentsAcrossAllSchools = (req,res)=>{
+    var result_type = req.body.result_type 
+    
     Student.aggregate([
        {
            $project: {
@@ -29,7 +30,17 @@ exports.showTopTenStudentsAcrossAllSchoolsYearly = (req,res)=>{
                 input: "$subjects",
                 initialValue: 0,
                 in: {
-                  $sum : ["$$value","$$this.Math.`yearly`","$$this.English.yearly","$$this.Science.yearly","$$this.Social Science.yearly"] 
+                    $sum: [
+                        "$$value",
+                        {
+                            $cond:{
+                                if: {$eq: [ result_type, "yearly" ] },
+                                then: "$$this.yearly",
+                                else: "$$this.quartely"
+                            }
+                        }
+                        
+                     ]
                 }
               }
             }
@@ -52,13 +63,13 @@ exports.showTopTenStudentsAcrossAllSchoolsYearly = (req,res)=>{
 }
 
 
-exports.showTopTenStudentsAcrossSchoolYearly = (req,res)=>{
+exports.showTopTenStudentsAcrossSchool = (req,res)=>{
     var selected_school = req.body.school
+    var result_type = req.body.result_type 
     Student.aggregate([
        {
-        $match: {school : selected_school }
+             $match: {school : selected_school }
        },
-
        {
            $project: {
             _id : 0,   
@@ -69,7 +80,17 @@ exports.showTopTenStudentsAcrossSchoolYearly = (req,res)=>{
                 input: "$subjects",
                 initialValue: 0,
                 in: {
-                  $sum : ["$$value","$$this.Math.yearly","$$this.English.yearly","$$this.Science.yearly","$$this.Social Science.yearly"] 
+                    $sum: [
+                        "$$value",
+                        {
+                            $cond:{
+                                if: {$eq: [ result_type, "yearly" ] },
+                                then: "$$this.yearly",
+                                else: "$$this.quartely"
+                            }
+                        }
+                        
+                     ]
                 }
               }
             }
