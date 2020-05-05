@@ -1,21 +1,5 @@
 const Student = require("../models/student_model");
 
-exports.addStudent = (req,res)=>{
-    const student = new Student({
-        name : req.body.name,
-        school : req.body.school,
-        subjects : req.body.subjects
-    })
-
-    student.save()
-    .then(()=>{
-        res.send("Student Saved Succesfully!");
-    })
-    .catch(err=>{
-        res.status(400).send("An Error Occured");
-    })
-}
-
 exports.showTopTenStudentsAcrossAllSchools = (req,res)=>{
     var result_type = req.body.result_type 
 
