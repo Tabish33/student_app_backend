@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const student_routes = require("./routes/student_routes")
+const analytics_routes = require("./routes/analytics_routes")
 const PORT = process.env.PORT || 3000
 app.use(express.json())
 
-app.use('/student',student_routes);
+app.use('/analytics',analytics_routes);
 
 
 //mongoDB connection string
