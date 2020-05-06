@@ -9,7 +9,7 @@ exports.showTopTenStudentsAcrossAllSchools = (req,res)=>{
             _id : 0,   
             name: 1,
             school: 1,
-            'total_marks': {
+            'score': {
               $reduce: {
                 input: "$subjects",
                 initialValue: 0,
@@ -31,7 +31,7 @@ exports.showTopTenStudentsAcrossAllSchools = (req,res)=>{
           }
        },
        {
-            $sort : {total_marks: -1}
+            $sort : {score: -1}
        },
        {
             $limit : 10  
@@ -48,8 +48,8 @@ exports.showTopTenStudentsAcrossAllSchools = (req,res)=>{
 
 
 exports.showTopTenStudentsAcrossSchool = (req,res)=>{
-    var selected_school = req.body.school
-    var result_type = req.body.result_type 
+    var selected_school = req.params.school
+    var result_type = req.params.type 
     Student.aggregate([
        {
              $match: {school : selected_school }
@@ -59,7 +59,7 @@ exports.showTopTenStudentsAcrossSchool = (req,res)=>{
             _id : 0,   
             name: 1,
             school: 1,
-            'total_marks': {
+            'score': {
               $reduce: {
                 input: "$subjects",
                 initialValue: 0,
@@ -81,7 +81,7 @@ exports.showTopTenStudentsAcrossSchool = (req,res)=>{
           }
        },
        {
-            $sort : {total_marks: -1}
+            $sort : {score: -1}
        },
        {
             $limit : 10  
@@ -160,8 +160,8 @@ exports.showTopTenSchools = (req,res)=>{
 }
 
 exports.showTopTenSchoolsInSubject = (req,res)=>{
-    var selected_subject = req.body.subject
-    var result_type = req.body.result_type 
+    var selected_subject = req.params.subject
+    var result_type = req.params.type 
     Student.aggregate([
        {
            $unwind : "$subjects"
@@ -220,8 +220,10 @@ exports.showTopTenSchoolsInSubject = (req,res)=>{
 }
 
 exports.showTopTenStudentsInSubjectAcrossAllSchools = (req,res)=>{
-    var selected_subject = req.body.subject
-    var result_type = req.body.result_type 
+    console.log(req.params);
+    
+    var selected_subject = req.params.subject
+    var result_type = req.params.type 
     Student.aggregate([
        {
            $unwind: "$subjects"
@@ -261,9 +263,9 @@ exports.showTopTenStudentsInSubjectAcrossAllSchools = (req,res)=>{
 }
 
 exports.showTopTenStudentsInSubjectAcrossSchool = (req,res)=>{
-    var selected_school = req.body.school
-    var selected_subject = req.body.subject
-    var result_type = req.body.result_type 
+    var selected_school = req.params.school
+    var selected_subject = req.params.subject
+    var result_type = req.params.type 
     Student.aggregate([
         {
             $match : {school: selected_school}
