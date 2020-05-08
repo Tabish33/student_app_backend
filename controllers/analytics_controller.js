@@ -1,7 +1,7 @@
 const Student = require("../models/student_model");
 
 exports.showTopTenStudentsAcrossAllSchools = (req,res)=>{
-    var result_type = req.body.result_type 
+    var result_type = req.params.type 
 
     Student.aggregate([
        {
@@ -97,7 +97,7 @@ exports.showTopTenStudentsAcrossSchool = (req,res)=>{
 }
 
 exports.showTopTenSchools = (req,res)=>{
-    var result_type = req.body.result_type 
+    var result_type = req.params.type 
     Student.aggregate([
        {
            $project: {
